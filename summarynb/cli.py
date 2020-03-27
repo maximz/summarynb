@@ -9,9 +9,7 @@ import subprocess
 @click.group()
 def main(args=None):
     """Summary Notebooks Tool."""
-    # header for every command
-    click.echo("==Summary Notebooks Tool==")
-    return 0
+    pass
 
 def git_root_path():
     # when a hook is executed by git, it's executed in root of repo
