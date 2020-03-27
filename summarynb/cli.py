@@ -8,7 +8,7 @@ import subprocess
 
 @click.group()
 def main(args=None):
-    """Console script for summarynb."""
+    """Summary Notebooks Tool."""
     # header for every command
     click.echo("==Summary Notebooks Tool==")
     return 0
@@ -109,6 +109,7 @@ def unregister_nb():
 @main.command()
 def run():
     # TODO: execute notebooks in autorun list
+    # TODO: run git add on them. This is generally anti-pracitce for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
     print('ran hook')
 
 
