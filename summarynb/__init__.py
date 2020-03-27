@@ -13,6 +13,13 @@ __version__ = '0.1.0'
 
 
 def image(img_src):
+    """Renders an image.
+
+    :param img_src: Image filanem.
+    :type img_src: str
+    :return: Template function that accepts a max pixel width integer and returns HTML.
+    :rtype: function
+    """
     def template(max_width): return """<img src="{img_src}" style="max-width: {max_width}px; max-height: 800px;" />""".format(
         img_src=img_src,
         max_width=max_width
@@ -21,6 +28,13 @@ def image(img_src):
 
 
 def table(df):
+    """Renders a Pandas dataframe.
+
+    :param df: the dataframe
+    :type df: pandas.DataFrame
+    :return: Template function that returns HTML.
+    :rtype: function
+    """
     def template(max_width): return df.to_html()
     return template
 
