@@ -55,6 +55,17 @@ def test_command_line_interface():
     result = runner.invoke(cli.main)
     assert result.exit_code == 0
     assert 'Summary Notebooks Tool' in result.output
+    assert '--help  Show this message and exit.' in result.output
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
+
+def test_read_write_metadata_consistency():
+    """Read/write metadata several times. Confirm consistent."""
+    df1 = cli.get_or_create_metadata()
+    cli.write_metadata(df1)
+    df2 = cli.get_or_create_metadata()
+    cli.write_metadata(df2)
+    df3 = cli.get_or_create_metadata()
+    assert df1.equals(df2)
+    assert df2.equals(df3)

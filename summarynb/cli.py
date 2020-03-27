@@ -4,12 +4,14 @@ import click
 import os
 import stat
 import subprocess
+import pandas as pd
 
 
 @click.group()
 def main(args=None):
     """Summary Notebooks Tool."""
     pass
+
 
 def git_root_path():
     # when a hook is executed by git, it's executed in root of repo
@@ -21,7 +23,8 @@ def git_root_path():
 
 
 def path_to_config_file():
-    return os.path.join(git_root_path(), '.summarynb.config.tsv')
+    return os.path.join(git_root_path(), '.summarynb.config')
+
 
 def path_to_hook():
     githooks_dir = os.path.join(git_root_path(), '.git/hooks')
@@ -73,18 +76,23 @@ def uninstall():
 
 def get_or_create_metadata():
     # retrieves or creates metadata file
-    pass
+    fname = path_to_config_file()
+    if os.path.exists(fname):
+        return pd.read_csv(fname)
+    return pd.DataFrame(data=None, index=[], columns=['filename'], dtype='object')
 
 
-def write_metadata():
+def write_metadata(df):
     # writes metadata file
-    pass
+    df.to_csv(path_to_config_file(), index=None)
 
 
 @main.command()
 def list_nb():
-    # TODO: reports which notebooks are registered for autorun, and whether they are found on disk
-    pass
+    """reports which notebooks are registered for autorun, and whether they are found on disk"""
+    df = get_or_create_metadata()
+    df['exists'] = df['filename'].apply(os.path.exists)
+    print(df)
 
 
 def prune_nb():
@@ -93,21 +101,34 @@ def prune_nb():
 
 
 @main.command()
-def register_nb():
-    # TODO: registers a notebook for autorun
-    pass
+@click.argument('filepath')
+def register_nb(filepath):
+    """registers a notebook for autorun"""
+    assert os.path.exists(filepath)
+    df = get_or_create_metadata()
+    assert not filepath in df['filename'].values, 'Already registered'
+    df = df.append(pd.DataFrame({'filename': filepath}, index=[-1]))
+    write_metadata(df)
 
 
 @main.command()
-def unregister_nb():
-    # TODO: deregisters a notebook for autorun
-    pass
+@click.argument('filepath')
+def unregister_nb(filepath):
+    """deregisters a notebook for autorun"""
+    df = get_or_create_metadata().set_index('filename')
+    # throws exception if filename not in index
+    df = df.drop([filepath], axis=0).reset_index()
+    write_metadata(df)
 
 
 @main.command()
 def run():
     # TODO: execute notebooks in autorun list
-    # TODO: run git add on them. This is generally anti-pracitce for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
+    # TODO: run git add on them. This is generally anti-practice for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
+    df = get_or_create_metadata()
+    for fname in df['filename'].values:
+        subprocess.run(['touch', fname])
+        subprocess.run(['git', 'add', fname])
     print('ran hook')
 
 
