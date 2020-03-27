@@ -10,5 +10,5 @@ twine==1.14.0
 Click==7.0
 pytest==4.6.5
 pytest-runner==5.1
-pandas>=1.0.3
+pandas>=0.23.0
 ipython>=7.13.0
