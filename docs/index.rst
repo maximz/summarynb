@@ -5,7 +5,7 @@ Welcome to Summary Notebooks's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   readme
+   README
    installation
    usage
    modules
