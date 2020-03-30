@@ -1,6 +1,6 @@
 ,Run 1
-slope,10.000000000000002
-intercept,0.0
-r_value,1.0
+slope,9.999999999999998
+intercept,2.220446049250313e-16
+r_value,0.9999999999999996
 p_value,0.0
-std_err,0.0
+std_err,3.0104891793495746e-08
