@@ -138,9 +138,9 @@ def run():
     print("Running summary notebooks. Skip this with --no-verify")
     for fname in df["filename"].values:
         print(fname)
-        subprocess.run(["touch", fname])
+        subprocess.run(["nbexec", fname])
         subprocess.run(["git", "add", fname])
-    print("ran hook")
+        print()
 
 
 if __name__ == "__main__":
