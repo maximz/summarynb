@@ -93,7 +93,7 @@ def write_metadata(df):
     df.to_csv(path_to_config_file(), index=None)
 
 
-@main.command()
+@main.command(name="list")
 def list_nb():
     """reports which notebooks are registered for autorun, and whether they are found on disk"""
     df = get_or_create_metadata()
@@ -108,18 +108,21 @@ def prune_nb():
 
 @main.command()
 @click.argument("filepath")
-def register_nb(filepath):
+def mark(filepath):
     """registers a notebook for autorun"""
     assert os.path.exists(filepath)
     df = get_or_create_metadata()
     assert not filepath in df["filename"].values, "Already registered"
     df = df.append(pd.DataFrame({"filename": filepath}, index=[-1]))
     write_metadata(df)
+    print(
+        "Registered notebook for autorun. Make sure git pre-commit hook is installed by running: summarynb install"
+    )
 
 
 @main.command()
 @click.argument("filepath")
-def unregister_nb(filepath):
+def unmark(filepath):
     """deregisters a notebook for autorun"""
     df = get_or_create_metadata().set_index("filename")
     # throws exception if filename not in index
