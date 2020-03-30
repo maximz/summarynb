@@ -16,20 +16,24 @@ def main(args=None):
 def git_root_path():
     # when a hook is executed by git, it's executed in root of repo
     # when we run this as user, we need to manually go to $(git rev-parse --show-toplevel)
-    result = subprocess.run(['git', 'rev-parse', '--show-toplevel'],
-                            stdout=subprocess.PIPE, universal_newlines=True)
-    assert result.returncode == 0, 'not a git repo!'
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        stdout=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    assert result.returncode == 0, "not a git repo!"
     return result.stdout.strip()
 
 
 def path_to_config_file():
-    return os.path.join(git_root_path(), '.summarynb.config')
+    return os.path.join(git_root_path(), ".summarynb.config")
 
 
 def path_to_hook():
-    githooks_dir = os.path.join(git_root_path(), '.git/hooks')
-    assert os.path.isdir(githooks_dir), 'not a git repo!'
-    return os.path.join(githooks_dir, 'pre-commit')
+    githooks_dir = os.path.join(git_root_path(), ".git/hooks")
+    assert os.path.isdir(githooks_dir), "not a git repo!"
+    return os.path.join(githooks_dir, "pre-commit")
+
 
 # TODO: write test that confirms these work identically from git root path as from subdir
 # git_root_path()
@@ -53,13 +57,15 @@ def install():
     if os.path.exists(fname):
         # ask for confirmation
         click.confirm(
-            'This will overwrite existing pre-commit hook. Do you want to continue?', abort=True)
-    with open(fname, 'w') as w:
+            "This will overwrite existing pre-commit hook. Do you want to continue?",
+            abort=True,
+        )
+    with open(fname, "w") as w:
         w.write(hook_template)
         # owner has all permissions including execute
         # group and others have read
         os.chmod(fname, stat.S_IRWXU | stat.S_IRGRP | stat.S_IROTH)
-    print('installed')
+    print("installed")
 
 
 @main.command()
@@ -67,11 +73,11 @@ def uninstall():
     fname = path_to_hook()
     # check whether there's already a hook
     if not os.path.exists(fname):
-        print('no hook installed')
+        print("no hook installed")
         sys.exit(1)
-    if click.confirm('This will remove all pre-commit hooks. Do you want to continue?'):
+    if click.confirm("This will remove all pre-commit hooks. Do you want to continue?"):
         os.remove(fname)
-        print('uninstalled')
+        print("uninstalled")
 
 
 def get_or_create_metadata():
@@ -79,7 +85,7 @@ def get_or_create_metadata():
     fname = path_to_config_file()
     if os.path.exists(fname):
         return pd.read_csv(fname)
-    return pd.DataFrame(data=None, index=[], columns=['filename'], dtype='object')
+    return pd.DataFrame(data=None, index=[], columns=["filename"], dtype="object")
 
 
 def write_metadata(df):
@@ -91,7 +97,7 @@ def write_metadata(df):
 def list_nb():
     """reports which notebooks are registered for autorun, and whether they are found on disk"""
     df = get_or_create_metadata()
-    df['exists'] = df['filename'].apply(os.path.exists)
+    df["exists"] = df["filename"].apply(os.path.exists)
     print(df)
 
 
@@ -101,21 +107,21 @@ def prune_nb():
 
 
 @main.command()
-@click.argument('filepath')
+@click.argument("filepath")
 def register_nb(filepath):
     """registers a notebook for autorun"""
     assert os.path.exists(filepath)
     df = get_or_create_metadata()
-    assert not filepath in df['filename'].values, 'Already registered'
-    df = df.append(pd.DataFrame({'filename': filepath}, index=[-1]))
+    assert not filepath in df["filename"].values, "Already registered"
+    df = df.append(pd.DataFrame({"filename": filepath}, index=[-1]))
     write_metadata(df)
 
 
 @main.command()
-@click.argument('filepath')
+@click.argument("filepath")
 def unregister_nb(filepath):
     """deregisters a notebook for autorun"""
-    df = get_or_create_metadata().set_index('filename')
+    df = get_or_create_metadata().set_index("filename")
     # throws exception if filename not in index
     df = df.drop([filepath], axis=0).reset_index()
     write_metadata(df)
@@ -127,11 +133,11 @@ def run():
     # TODO: run git add on them. This is generally anti-practice for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
     df = get_or_create_metadata()
     print("Running summary notebooks. Skip this with --no-verify")
-    for fname in df['filename'].values:
+    for fname in df["filename"].values:
         print(fname)
-        subprocess.run(['touch', fname])
-        subprocess.run(['git', 'add', fname])
-    print('ran hook')
+        subprocess.run(["touch", fname])
+        subprocess.run(["git", "add", fname])
+    print("ran hook")
 
 
 if __name__ == "__main__":

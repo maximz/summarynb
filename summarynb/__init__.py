@@ -1,11 +1,12 @@
 import os
 import pandas as pd
 from IPython.display import HTML, display
+
 """Top-level package for Summary Notebooks."""
 
 __author__ = """Maxim Zaslavsky"""
-__email__ = 'maxim@maximz.com'
-__version__ = '0.1.0'
+__email__ = "maxim@maximz.com"
+__version__ = "0.1.0"
 
 """Functions that return functions that return HTML."""
 
@@ -20,10 +21,12 @@ def image(img_src):
     :return: Template function that accepts a max pixel width integer and returns HTML.
     :rtype: function
     """
-    def template(max_width): return """<img src="{img_src}" style="max-width: {max_width}px; max-height: 800px;" />""".format(
-        img_src=img_src,
-        max_width=max_width
-    )
+
+    def template(max_width):
+        return """<img src="{img_src}" style="max-width: {max_width}px; max-height: 800px;" />""".format(
+            img_src=img_src, max_width=max_width
+        )
+
     return template
 
 
@@ -35,7 +38,10 @@ def table(df):
     :return: Template function that returns HTML.
     :rtype: function
     """
-    def template(max_width): return df.to_html()
+
+    def template(max_width):
+        return df.to_html()
+
     return template
 
 
@@ -74,10 +80,10 @@ def _get_template(user_input):
     extension = os.path.splitext(user_input)[1]
 
     # detect different table types
-    if extension == '.csv':
+    if extension == ".csv":
         return csv(user_input)
-    if extension in ['.tsv', '.txt']:
-        return csv(user_input, sep='\t')
+    if extension in [".tsv", ".txt"]:
+        return csv(user_input, sep="\t")
 
     # assume it's an image
     return image(user_input)
@@ -105,11 +111,11 @@ def chunks(entries, shape):
     # https://stackoverflow.com/a/952952/130164
     entries = [item for sublist in entries for item in sublist]
 
-    if (isinstance(shape, list) or isinstance(shape, tuple)):
-        assert len(shape) <= 2, 'Only supports 2D arrays'
+    if isinstance(shape, list) or isinstance(shape, tuple):
+        assert len(shape) <= 2, "Only supports 2D arrays"
         if len(shape) == 2:
             # Confirm length
-            assert len(entries) == shape[0] * shape[1], 'Wrong length.'
+            assert len(entries) == shape[0] * shape[1], "Wrong length."
 
     # Convert shape to (n_rows, n_cols) tuple.
     if not isinstance(shape, list) and not isinstance(shape, tuple):
@@ -121,12 +127,12 @@ def chunks(entries, shape):
 
     n_col = shape[1]
     reshaped = [
-        entries[row_num * n_col:(row_num+1) * n_col]
+        entries[row_num * n_col : (row_num + 1) * n_col]
         for row_num in range(len(entries) // n_col)
     ]
     if len(entries) % n_col > 0:
         # handle remainder with an uneven row
-        reshaped.append(entries[(len(entries) // n_col) * n_col:])
+        reshaped.append(entries[(len(entries) // n_col) * n_col :])
     return reshaped
 
 
@@ -134,15 +140,15 @@ def _make_HTML(entries, max_width):
     """
     Create HTML table.
     """
-    def wrap_in_column(contents): return """<td align="center">{contents}</td>""".format(
-        contents=contents
-    )
-    def wrap_in_row(
-        contents): return """<tr>{contents}</tr>""".format(contents=contents)
 
-    def wrap_in_table(contents): return """<table>{contents}</table>""".format(
-        contents=contents
-    )
+    def wrap_in_column(contents):
+        return """<td align="center">{contents}</td>""".format(contents=contents)
+
+    def wrap_in_row(contents):
+        return """<tr>{contents}</tr>""".format(contents=contents)
+
+    def wrap_in_table(contents):
+        return """<table>{contents}</table>""".format(contents=contents)
 
     # Transform to list of lists (list of rows that are each a list of columns), if user passed in single object (1 row, 1 column) or a single list (1 row, many columns)
     entries = _ensure_list_of_lists(entries)
@@ -150,12 +156,7 @@ def _make_HTML(entries, max_width):
     # Make HTML for each row
     rows = [
         "\n".join(
-            [
-                wrap_in_column(
-                    _get_template(template)(max_width)
-                )
-                for template in row
-            ]
+            [wrap_in_column(_get_template(template)(max_width)) for template in row]
         )
         for row in entries
     ]
