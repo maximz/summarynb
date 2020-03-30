@@ -126,7 +126,9 @@ def run():
     # TODO: execute notebooks in autorun list
     # TODO: run git add on them. This is generally anti-practice for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
     df = get_or_create_metadata()
+    print("Running summary notebooks. Skip this with --no-verify")
     for fname in df['filename'].values:
+        print(fname)
         subprocess.run(['touch', fname])
         subprocess.run(['git', 'add', fname])
     print('ran hook')
