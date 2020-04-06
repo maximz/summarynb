@@ -136,16 +136,31 @@ def chunks(entries, shape):
     return reshaped
 
 
-def _make_HTML(entries, max_width):
+def _make_HTML(entries, headers, max_width):
     """
     Create HTML table.
     """
 
     def wrap_in_column(contents):
-        return """<td align="center">{contents}</td>""".format(contents=contents)
+        return """<td style="text-align: center">{contents}</td>""".format(
+            contents=contents
+        )
 
     def wrap_in_row(contents):
         return """<tr>{contents}</tr>""".format(contents=contents)
+
+    def make_headers(headers):
+        if headers is not None:
+            return """<tr>{contents}</tr>""".format(
+                contents="\n".join(
+                    [
+                        """<th style="text-align: center">%s</th>"""
+                        % str(header).strip()
+                        for header in headers
+                    ]
+                )
+            )
+        return ""
 
     def wrap_in_table(contents):
         return """<table>{contents}</table>""".format(contents=contents)
@@ -161,10 +176,12 @@ def _make_HTML(entries, max_width):
         for row in entries
     ]
     # assemble rows into table
-    return wrap_in_table("\n".join([wrap_in_row(row) for row in rows]))
+    return wrap_in_table(
+        make_headers(headers) + "\n".join([wrap_in_row(row) for row in rows])
+    )
 
 
-def show(entries, max_width=800):
+def show(entries, headers=None, max_width=800):
     """
     Display chosen figures and tables in an HTML table.
 
@@ -174,7 +191,9 @@ def show(entries, max_width=800):
             - Raw filenames (not wrapped in executable functions that return HTML templates) are also accepted, and will be auto-wrapped based on file extension.
             - If a list of lists is not provided, the input is interpreted as forming columns in a single row.
 
+        - [headers]: List of column headers.
+
         - [max_width]: set max pixel width for images, default 800px.
     """
 
-    return display(HTML(_make_HTML(entries, max_width=max_width)))
+    return display(HTML(_make_HTML(entries, headers=headers, max_width=max_width)))
