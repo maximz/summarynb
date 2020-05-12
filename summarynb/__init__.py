@@ -103,13 +103,32 @@ def _ensure_list_of_lists(entries):
     return entries
 
 
+def _flatten(lst):
+    """Flatten sublists in list.
+    see https://stackoverflow.com/a/952952/130164
+    """
+    from collections.abc import Sequence
+
+    entries = []
+    for sublist in lst:
+        # may be a sublist
+        if isinstance(sublist, Sequence) and not isinstance(
+            sublist, (str, bytes, bytearray)
+        ):
+            # recursively flatten sublist
+            entries.extend(_flatten(sublist))
+        else:
+            # just an item
+            entries.append(sublist)
+    return entries
+
+
 def chunks(entries, shape):
     """Reshape [entries] into chunks of shape [shape], which can be:
         - a (number of rows, number of columns) tuple, in which case we verify length
         - or simply a number of columns, in which case we guess the right number of rows, and allow in-complete rows."""
     # Flatten entries
-    # https://stackoverflow.com/a/952952/130164
-    entries = [item for sublist in entries for item in sublist]
+    entries = _flatten(entries)
 
     if isinstance(shape, list) or isinstance(shape, tuple):
         assert len(shape) <= 2, "Only supports 2D arrays"

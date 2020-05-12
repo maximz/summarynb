@@ -33,14 +33,14 @@ def test_chunks():
     # should flatten
     # should accept weird shapes
     # really this should be a pytest fixture with separate functions for each, but keeping quick and dirty for now
-    test_input = [["a", "b"], ["c", "d"], ["e", "f"]]
+    test_input = [["a", "b"], ["c", "d"], ["e", "filename"]]
     assert summarynb.chunks(test_input, (3, 2)) == test_input, "Reshape failed"
     assert summarynb.chunks(test_input, (2, 3)) == [
         ["a", "b", "c"],
-        ["d", "e", "f"],
+        ["d", "e", "filename"],
     ], "Reshape failed"
     assert summarynb.chunks(test_input, (1, 6)) == [
-        ["a", "b", "c", "d", "e", "f"]
+        ["a", "b", "c", "d", "e", "filename"]
     ], "Reshape failed"
     assert (
         summarynb.chunks(test_input, (2)) == test_input
@@ -50,10 +50,27 @@ def test_chunks():
     ), "Should accept non-tuple shape"
     assert summarynb.chunks(test_input, 4) == [
         ["a", "b", "c", "d"],
-        ["e", "f"],
+        ["e", "filename"],
     ], "Allow mis-shaped row overflow"
     with pytest.raises(AssertionError):
         summarynb.chunks(test_input, (2, 2))
+
+
+def test_flatten():
+    assert (
+        summarynb._flatten([["file1", "file2", "file3"]])
+        == summarynb._flatten(["file1", "file2", "file3"])
+        == summarynb._flatten(["file1", ["file2", ["file3"]]])
+        == ["file1", "file2", "file3"]
+    )
+
+
+def test_chunks_accept_flat_list():
+    # should accept list, not just list of lists
+    assert summarynb.chunks(["file1", "file2", "file3"], 2) == [
+        ["file1", "file2"],
+        ["file3"],
+    ]
 
 
 def test_list_of_lists_from_object():
