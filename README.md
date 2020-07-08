@@ -2,6 +2,10 @@
 
 [![](https://img.shields.io/pypi/v/summarynb.svg)](https://pypi.python.org/pypi/summarynb)
 [![](https://img.shields.io/travis/maximz/summarynb.svg)](https://travis-ci.com/maximz/summarynb)
+[![](https://img.shields.io/badge/docs-here-blue.svg)](https://summarynb.maximz.com)
+[![](https://img.shields.io/github/stars/maximz/summarynb?style=social)](https://github.com/maximz/summarynb)
+
+## What's a summary notebook?
 
 So you've just generated your latest plots and tables. How are you going to show your results off in your next meeting with your collaborators?
 
