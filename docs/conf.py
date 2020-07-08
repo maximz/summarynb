@@ -47,10 +47,10 @@ source_suffix = {
 }
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'contents'
 
 # General information about the project.
-project = 'Summary Notebooks'
+project = 'summarynb'
 copyright = "2020, Maxim Zaslavsky"
 author = "Maxim Zaslavsky"
 
@@ -73,7 +73,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'modules.rst']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -132,7 +132,7 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'summarynb.tex',
-     'Summary Notebooks Documentation',
+     'summarynb Documentation',
      'Maxim Zaslavsky', 'manual'),
 ]
 
@@ -143,7 +143,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'summarynb',
-     'Summary Notebooks Documentation',
+     'summarynb Documentation',
      [author], 1)
 ]
 
@@ -155,7 +155,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'summarynb',
-     'Summary Notebooks Documentation',
+     'summarynb Documentation',
      author,
      'summarynb',
      'One line description of project.',

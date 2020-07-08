@@ -18,11 +18,12 @@ script: tox
 # $ travis encrypt --add deploy.password
 deploy:
   provider: pypi
+  skip_cleanup: true
+  skip_existing: true
   distributions: sdist bdist_wheel
-  user: maximz
-  password:
-    secure: PLEASE_REPLACE_ME
+  user: __token__
+  # password in env var PYPI_PASSWORD
   on:
-    tags: true
+    branch: master
     repo: maximz/summarynb
     python: 3.8
