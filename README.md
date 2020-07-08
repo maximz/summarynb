@@ -9,10 +9,11 @@ You could drag your figures into Powerpoint or a Google Doc. But it's tedious to
 
 Or you could scroll through your original notebooks, live on screen share. Admit it, those notebooks are messy. Do you want to be switching tabs and scrolling through all your intermediate results during your meeting? What about the results you generated with scripts, not with notebooks?
 
-**Enter summarynb. Present your results easily in Jupyter "summary notebooks"**:
+Enter _summarynb_.
+
+**Present your results easily in Jupyter "summary notebooks":**
 
 - **Versioned with your data.** Summary notebooks are versioned alongside your code and results, so you see exactly the figure and table versions you expect.
-- **Shareable.** Just commit it to Git. Collaborators can view the rendered notebook on Github.
 - **Beautiful.** Easily stack or arrange your figures and tables side-by-side, inline with your text. Sane defaults for figure sizes, so you don't get the ginormous figures you'd see if using standard Markdown to show an image.
 - **Easy to use.**
     ```
@@ -20,11 +21,12 @@ Or you could scroll through your original notebooks, live on screen share. Admit
     show("plot.png")
     ```
     There, now you know how to use summarynb.
-- **Regenerates automatically.** Optional git commit hook.
+- **Shareable.** Just commit it to Git. Collaborators can view the rendered notebook on Github.
+- **Updated automatically.** Optional git commit hook.
 
-Since 2015, every project of mine has used summary notebooks, thanks to a tip from my former colleague Nick.
+Since 2015, every project of mine has used summary notebooks, thanks to a tip from my former colleague Nick. I write out the analysis as I go along, and incorporate relevant figures and tables inline.
 
-I write out the analysis as I go along, and incorporate relevant figures and tables inline. Not only has this made sharing results in group meetings much easier, but this documentation practice has saved me a ton of time when returning to old projects. And I love that I can trust that the presented results are up-to-date with the code version I have checked out. I encourage you to try it out with the instructions below.
+Not only has this made sharing results in group meetings much easier, but this documentation practice has saved me a ton of time when returning to old projects. And I love that I can trust that the presented results are up-to-date with the code version I have checked out. I encourage you to try it out with the instructions below.
 
 ## [Example.](https://nbviewer.jupyter.org/github/maximz/summarynb/blob/master/Example.ipynb)
 
@@ -189,7 +191,7 @@ jupyter labextension update --all
 pip install jupyterlab_code_formatter==x.x.x
 ```
 
-## Dev
+## Development
 
 ```bash
 pip install -r requirements_dev.txt
@@ -197,9 +199,8 @@ pip install -e .
 make test
 ```
 
-## TODO
+TODOs:
 
-* Setup CI
 * Lint
 * Pre-commit support
 * Accept pdf and other image formats
