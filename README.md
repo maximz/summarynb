@@ -1,13 +1,13 @@
 # Jupyter Summary Notebooks
 
-[![](https://img.shields.io/pypi/v/summarynb.svg)]([https://pypi.python.org/pypi/summarynb])
+[![](https://img.shields.io/pypi/v/summarynb.svg)](https://pypi.python.org/pypi/summarynb)
 [![](https://img.shields.io/travis/maximz/summarynb.svg)](https://travis-ci.com/maximz/summarynb)
 
 So you've just generated your latest plots and tables. How are you going to show your results off in your next meeting with your collaborators?
 
 You could drag your figures into Powerpoint or a Google Doc. But it's tedious to import each figure and table one-by-one and position it manually. Even more painful when you change some code and need to delete and re-import your figures. And are you sure you updated all your figures? Are the versions all consistent?
 
-Or you could scroll through your original notebooks, live on screen share. Admit it, those notebooks are messy. Do you want to be switching tabs and scrolling through all your intermediate results during your meeting? What about the results you generated with scripts, not with notebooks?
+Or you could scroll through your original notebooks, live on screen share. Admit it, those notebooks are messy! Do you want to be switching tabs and scrolling through all your intermediate results during your meeting? What about the results you generated with scripts, not with notebooks?
 
 Enter _summarynb_.
 
@@ -24,7 +24,7 @@ Enter _summarynb_.
 - **Shareable.** Just commit it to Git. Collaborators can view the rendered notebook on Github.
 - **Updated automatically.** Optional git commit hook.
 
-Since 2015, every project of mine has used summary notebooks, thanks to a tip from my former colleague Nick. I write out the analysis as I go along, and incorporate relevant figures and tables inline.
+Since 2015, every project of mine has used summary notebooks, thanks to a tip from my former colleague Nick. I write out the analysis as I go along, and incorporate relevant figures and tables inline. I'm a huge fan of this approach, and _summarynb_ is designed to make it easier.
 
 Not only has this made sharing results in group meetings much easier, but this documentation practice has saved me a ton of time when returning to old projects. And I love that I can trust that the presented results are up-to-date with the code version I have checked out. I encourage you to try it out with the instructions below.
 
@@ -197,6 +197,11 @@ pip install jupyterlab_code_formatter==x.x.x
 pip install -r requirements_dev.txt
 pip install -e .
 make test
+
+# bump version before submitting a PR against master (all master commits are deployed)
+bump2version patch # possible: major / minor / patch
+
+# also ensure CHANGELOG.md updated
 ```
 
 TODOs:

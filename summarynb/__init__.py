@@ -6,7 +6,7 @@ from IPython.display import HTML, display
 
 __author__ = """Maxim Zaslavsky"""
 __email__ = "maxim@maximz.com"
-__version__ = "0.1.0"
+__version__ = '0.1.1'
 
 """Functions that return functions that return HTML."""
 
