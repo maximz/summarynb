@@ -15,12 +15,11 @@ Enter _summarynb_.
 
 - **Versioned with your data.** Summary notebooks are versioned alongside your code and results, so you see exactly the figure and table versions you expect.
 - **Beautiful.** Easily stack or arrange your figures and tables side-by-side, inline with your text. Sane defaults for figure sizes, so you don't get the ginormous figures you'd see if using standard Markdown to show an image.
-- **Easy to use.**
+- **Easy to use.** _summarynb_ knows what to do for common file extensions.
     ```
     from summarynb import show
     show("plot.png")
     ```
-    There, now you know how to use summarynb.
 - **Shareable.** Just commit it to Git. Collaborators can view the rendered notebook on Github.
 - **Updated automatically.** Optional git commit hook.
 
