@@ -5,40 +5,58 @@
 [![](https://img.shields.io/badge/docs-here-blue.svg)](https://summarynb.maximz.com)
 [![](https://img.shields.io/github/stars/maximz/summarynb?style=social)](https://github.com/maximz/summarynb)
 
-## What's a summary notebook?
+## How do you show off your latest plots and tables when you meet with collaborators?
 
-So you've just generated your latest plots and tables. How are you going to show your results off in your next meeting with your collaborators?
+I used to drag my figures and tables into Powerpoint or a Google Doc. But it's tedious to import and position each item one-by-one. And it's even more painful to delete and re-import new versions after changing some code (are you positive you updated _all_ your figures to the latest version?)
 
-You could drag your figures into Powerpoint or a Google Doc. But it's tedious to import each figure and table one-by-one and position it manually. Even more painful when you change some code and need to delete and re-import your figures. And are you sure you updated all your figures? Are the versions all consistent?
+Or you could scroll through your original Jupyter notebooks, live on screen share. Admit it, those notebooks are messy! Do you want to be switching tabs and scrolling through all your intermediate results during your meeting? What about the results you generated with scripts, not with notebooks? Most importantly, you can't look at two related figures side-by-side if they come from different sources.
 
-Or you could scroll through your original notebooks, live on screen share. Admit it, those notebooks are messy! Do you want to be switching tabs and scrolling through all your intermediate results during your meeting? What about the results you generated with scripts, not with notebooks?
+## Present your results easily in a Jupyter "summary notebook".
 
-Enter _summarynb_.
+A summary notebook is just a plain Jupyter notebook:
 
-**Present your results easily in Jupyter "summary notebooks":**
+* A plain-English description of your analysis
+* Shows important figures and tables inline with your text, imported by their filenames
+* Committed and versioned with your code — meaning the summary notebook always reflects your analysis at that point in time, because it imports your latest result files.
 
-- **Versioned with your data.** Summary notebooks are versioned alongside your code and results, so you see exactly the figure and table versions you expect.
-- **Beautiful.** Easily stack or arrange your figures and tables side-by-side, inline with your text. Sane defaults for figure sizes, so you don't get the ginormous figures you'd see if using standard Markdown to show an image.
-- **Easy to use.** _summarynb_ knows what to do for common file extensions.
-    ```
-    from summarynb import show
-    show("plot.png")
-    ```
-- **Shareable.** Just commit it to Git. Collaborators can view the rendered notebook on Github.
-- **Updated automatically.** Optional git commit hook.
+**Write out the analysis as you go along, and incorporate relevant figures and tables inline**.
 
-Since 2015, every project of mine has used summary notebooks, thanks to a tip from my former colleague Nick. I write out the analysis as I go along, and incorporate relevant figures and tables inline. I'm a huge fan of this approach, and _summarynb_ is designed to make it easier.
+Use `summarynb` to render any plot or table alongside your text, by its filename:
+```python
+from summarynb import show
+show("plot.png")
+```
+    
+  * _summarynb_ knows what to do for common file extensions
+  
+  * _summarynb_ uses sane defaults for figure sizes. You won't get ginormous figures like you'd see if showing an image with plain Markdown.
+  
 
-Not only has this made sharing results in group meetings much easier, but this documentation practice has saved me a ton of time when returning to old projects. And I love that I can trust that the presented results are up-to-date with the code version I have checked out. I encourage you to try it out with the instructions below.
+**Look at related figures side-by-side**:
 
-## [Example.](https://nbviewer.jupyter.org/github/maximz/summarynb/blob/master/Example.ipynb)
+```python
+from summarynb import show
+show([ "plot1.png", "plot2.png", "results.csv" ])
+```
 
-## Best practices for summary notebooks
+  - Review two visualizations of the same experiment, produced by different scripts and notebooks, in the same row of my summary notebook.
 
-* Write out your analysis in plain English, so you can understand the logic when you return.
-* Be concise. Only include the best figures and tables, not all the intermediate plots you generated.
-* Link to the source scripts/notebooks that generated your results.
-* Use a table of contents. (There are Jupyter extensions for this; see below.)
+  - Pull in a results table alongside a figure. Imagine a linear regression: With a one-liner call to `show()`, review the scatterplot and a table of regression coefficients side-by-side.
+
+  - If you've generated figures for every data point, review them all easily in an **auto-layout grid**. Just pass an array of entries to `chunks()` and then to `show()`, docs below.
+
+
+**Screen share your summary notebook or send a Github link** to collaborators. Be concise. Only include the best figures and tables, not the intermediate plots.
+
+**The presented results are up-to-date with the code** version checked out.
+
+**Auto-regenerate your summary notebook on every Git commit** by installing the optional git commit hook. 
+
+**Easily go back to the exact source.** What generated that plot or table? The filename is right in the notebook. Grep for that filename to track down which script or notebook wrote it. Or link in your summary notebook to the source scripts/notebooks that generated your results.
+
+Since 2015, every project of mine has included a summary notebook, thanks to a tip from my former colleague Nick. This documentation practice **saves so much time when returning to old projects**. 
+
+## [Example summarynb usage.](https://nbviewer.jupyter.org/github/maximz/summarynb/blob/master/Example.ipynb)
 
 ## Your first `show()`
 
@@ -152,7 +170,7 @@ summarynb uninstall
 
 ## Other tips to make your notebooks beautiful
 
-Note: [Requires nodejs](https://jupyterhub.readthedocs.io/en/stable/quickstart.html)
+Adding a table of contents really makes summary notebooks shine. Here's how to install a Jupyter extension for this, and for code formatting. (Note: [requires nodejs](https://jupyterhub.readthedocs.io/en/stable/quickstart.html).)
 
 ```bash
 # if using conda:
