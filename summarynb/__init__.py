@@ -6,7 +6,7 @@ from IPython.display import HTML, display
 
 __author__ = """Maxim Zaslavsky"""
 __email__ = "maxim@maximz.com"
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 """Functions that return functions that return HTML."""
 
@@ -16,15 +16,22 @@ __version__ = '0.1.2'
 def image(img_src):
     """Renders an image.
 
-    :param img_src: Image filanem.
+    :param img_src: Image filename.
     :type img_src: str
     :return: Template function that accepts a max pixel width integer and returns HTML.
     :rtype: function
     """
 
-    def template(max_width):
-        return """<img src="{img_src}" style="max-width: {max_width}px; max-height: 800px;" />""".format(
-            img_src=img_src, max_width=max_width
+    def template(max_width, max_height):
+        def convert_to_px_or_unset(optional_numeric_value):
+            if not optional_numeric_value:
+                return 'inherit'
+            return str(optional_numeric_value) + 'px'
+        max_width = convert_to_px_or_unset(max_width)
+        max_height = convert_to_px_or_unset(max_height)
+
+        return """<img src="{img_src}" style="max-width: {max_width}; max-height: {max_height};" />""".format(
+            img_src=img_src, max_width=max_width, max_height=max_height
         )
 
     return template
@@ -39,7 +46,7 @@ def table(df):
     :rtype: function
     """
 
-    def template(max_width):
+    def template(max_width, max_height):
         return df.to_html()
 
     return template
@@ -155,7 +162,7 @@ def chunks(entries, shape):
     return reshaped
 
 
-def _make_HTML(entries, headers, max_width):
+def _make_HTML(entries, headers, max_width, max_height):
     """
     Create HTML table.
     """
@@ -190,7 +197,7 @@ def _make_HTML(entries, headers, max_width):
     # Make HTML for each row
     rows = [
         "\n".join(
-            [wrap_in_column(_get_template(template)(max_width)) for template in row]
+            [wrap_in_column(_get_template(template)(max_width, max_height)) for template in row]
         )
         for row in entries
     ]
@@ -200,7 +207,7 @@ def _make_HTML(entries, headers, max_width):
     )
 
 
-def show(entries, headers=None, max_width=800):
+def show(entries, headers=None, max_width=800, max_height=800):
     """
     Display chosen figures and tables in an HTML table.
 
@@ -212,7 +219,9 @@ def show(entries, headers=None, max_width=800):
 
         - [headers]: List of column headers.
 
-        - [max_width]: set max pixel width for images, default 800px.
+        - [max_width]: set max pixel width for images, default 800px. set to None to disable max width.
+
+        - [max_height]: set max pixel height for images, default 800px. set to None to disable max height.
     """
 
-    return display(HTML(_make_HTML(entries, headers=headers, max_width=max_width)))
+    return display(HTML(_make_HTML(entries, headers=headers, max_width=max_width, max_height=max_height)))
