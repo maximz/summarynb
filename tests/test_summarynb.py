@@ -86,3 +86,13 @@ def test_read_write_metadata_consistency():
     df3 = cli.get_or_create_metadata()
     assert df1.equals(df2)
     assert df2.equals(df3)
+
+def test_html_export():
+    # confirm exporting respects option regarding whether to include code
+    fname = 'Example.ipynb'
+
+    _, metadata = cli._run_export(fname, no_code=False)
+    assert metadata['global_content_filter']['include_input']
+
+    _, metadata = cli._run_export(fname, no_code=True)
+    assert not metadata['global_content_filter']['include_input']

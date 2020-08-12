@@ -10,7 +10,7 @@ with open('README.md') as readme_file:
 with open('CHANGELOG.md') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', 'IPython', 'pandas', 'nbexec']
+requirements = ['Click>=7.0', 'IPython', 'pandas', 'nbexec', "nbconvert"]
 
 setup_requirements = ['pytest-runner', ]
 

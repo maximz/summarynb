@@ -129,11 +129,37 @@ def unmark(filepath):
     df = df.drop([filepath], axis=0).reset_index()
     write_metadata(df)
 
+def _run_export(filepath, no_code):
+    import nbconvert
+    return nbconvert.export(
+        nbconvert.get_exporter('html'),
+        filepath,
+        config = {
+            'TemplateExporter': {
+                'exclude_input': no_code
+            }
+        }
+    )
+
+@main.command(name="export", help="Export as HTML")
+@click.argument("filepath")
+@click.option('-o', "--output", "output_fname", required=True, help="Destination HTML file path")
+@click.option("--no-code", default=False, is_flag=True, help="Exclude code sources")
+def export_as_html(filepath, output_fname, no_code):
+    """export notebook as html
+
+    sample usage:
+    $ summarynb export --output Example.html --no-code Example.ipynb
+    """
+    with open(output_fname, 'wb') as f:
+        html_out, _ = _run_export(filepath, no_code)
+        f.write(html_out.encode('utf-8'))
+
 
 @main.command()
 def run():
-    # TODO: execute notebooks in autorun list
-    # TODO: run git add on them. This is generally anti-practice for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
+    # execute notebooks in autorun list
+    # run git add on them. This is generally anti-practice for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
     df = get_or_create_metadata()
     print("Running summary notebooks. Skip this with --no-verify")
     for fname in df["filename"].values:

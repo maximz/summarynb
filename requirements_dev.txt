@@ -19,3 +19,4 @@ seaborn
 recommonmark>=0.6.0
 jupyterlab-code-formatter
 black
+nbconvert
