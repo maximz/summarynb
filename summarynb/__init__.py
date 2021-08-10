@@ -6,7 +6,7 @@ from IPython.display import HTML, display
 
 __author__ = """Maxim Zaslavsky"""
 __email__ = "maxim@maximz.com"
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 """Functions that return functions that return HTML."""
 
@@ -21,6 +21,9 @@ def image(img_src):
     :return: Template function that accepts a max pixel width integer and returns HTML.
     :rtype: function
     """
+
+    # Convert absolute path to relative path, since a browser won't be able to grab an image from "/home/..."
+    img_src = os.path.relpath(img_src)
 
     def template(max_width, max_height):
         def convert_to_px_or_unset(optional_numeric_value):
