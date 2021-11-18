@@ -132,14 +132,39 @@ def unmark(filepath):
 
 @main.command()
 def run():
-    # TODO: execute notebooks in autorun list
-    # TODO: run git add on them. This is generally anti-practice for git pre-commit hooks but exactly what this tool is designed for: seamless autocommit.
+    """
+    Execute notebooks in autorun list.
+
+    Don't auto-add to git index - that's an anti-practice for git pre-commit hooks.
+    When run locally, give the user a chance to review before committing. And CI should never be adding to the git index.
+
+    Strip away metadata so that this isn't dependent on small changes in python/jupyter versions.
+    Equivalent of:
+        $ jupyter nbconvert --to notebook --execute Example.ipynb --inplace \
+            --ClearMetadataPreprocessor.enabled=True \
+                --ClearMetadataPreprocessor.clear_cell_metadata=True \
+                    --ClearMetadataPreprocessor.clear_notebook_metadata=True \
+                        --ClearMetadataPreprocessor.preserve_nb_metadata_mask='()';
+    """
     df = get_or_create_metadata()
     print("Running summary notebooks. Skip this with --no-verify")
     for fname in df["filename"].values:
         print(fname)
-        subprocess.run(["nbexec", fname])
-        subprocess.run(["git", "add", fname])
+        subprocess.run(
+            [
+                "jupyter",
+                "nbconvert",
+                "--to",
+                "notebook",
+                "--execute",
+                fname,
+                "--inplace",
+                "--ClearMetadataPreprocessor.enabled=True",
+                "--ClearMetadataPreprocessor.clear_cell_metadata=True",
+                "--ClearMetadataPreprocessor.clear_notebook_metadata=True",
+                "--ClearMetadataPreprocessor.preserve_nb_metadata_mask=()",
+            ]
+        )
         print()
 
 

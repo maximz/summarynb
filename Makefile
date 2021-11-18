@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help
+.PHONY: clean clean-test clean-pyc clean-build docs help lint
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -47,14 +47,11 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-lint: ## check style with flake8
-	flake8 summarynb tests
+lint: # runs on all files (slow)
+	pre-commit run --all-files --show-diff-on-failure
 
 test: ## run tests quickly with the default Python
 	pytest
-
-test-all: ## run tests on every Python version with tox
-	tox
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source summarynb -m pytest
