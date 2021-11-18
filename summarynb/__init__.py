@@ -6,7 +6,7 @@ from IPython.display import HTML, display
 
 __author__ = """Maxim Zaslavsky"""
 __email__ = "maxim@maximz.com"
-__version__ = '0.1.4'
+__version__ = "0.1.4"
 
 """Functions that return functions that return HTML."""
 
@@ -28,8 +28,9 @@ def image(img_src):
     def template(max_width, max_height):
         def convert_to_px_or_unset(optional_numeric_value):
             if not optional_numeric_value:
-                return 'inherit'
-            return str(optional_numeric_value) + 'px'
+                return "inherit"
+            return str(optional_numeric_value) + "px"
+
         max_width = convert_to_px_or_unset(max_width)
         max_height = convert_to_px_or_unset(max_height)
 
@@ -135,8 +136,8 @@ def _flatten(lst):
 
 def chunks(entries, shape):
     """Reshape [entries] into chunks of shape [shape], which can be:
-        - a (number of rows, number of columns) tuple, in which case we verify length
-        - or simply a number of columns, in which case we guess the right number of rows, and allow in-complete rows."""
+    - a (number of rows, number of columns) tuple, in which case we verify length
+    - or simply a number of columns, in which case we guess the right number of rows, and allow in-complete rows."""
     # Flatten entries
     entries = _flatten(entries)
 
@@ -200,7 +201,10 @@ def _make_HTML(entries, headers, max_width, max_height):
     # Make HTML for each row
     rows = [
         "\n".join(
-            [wrap_in_column(_get_template(template)(max_width, max_height)) for template in row]
+            [
+                wrap_in_column(_get_template(template)(max_width, max_height))
+                for template in row
+            ]
         )
         for row in entries
     ]
@@ -227,4 +231,10 @@ def show(entries, headers=None, max_width=800, max_height=800):
         - [max_height]: set max pixel height for images, default 800px. set to None to disable max height.
     """
 
-    return display(HTML(_make_HTML(entries, headers=headers, max_width=max_width, max_height=max_height)))
+    return display(
+        HTML(
+            _make_HTML(
+                entries, headers=headers, max_width=max_width, max_height=max_height
+            )
+        )
+    )

@@ -37,21 +37,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
-      # - name: Cache precommit
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.cache/pre-commit
-      #     # Look to see if there is a cache hit for the corresponding requirements file
-      #     key: ${{ runner.os }}-precommit-${{matrix.python-version}}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Cache precommit
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pre-commit
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-precommit-${{matrix.python-version}}-${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip wheel
           pip install -r requirements_dev.txt
           pip install -U codecov
-      # - name: Lint
-      #   run: |
-      #       pre-commit install
-      #       pre-commit run --all-files --show-diff-on-failure
+          # Install this package too so that we can run summarynb in pre-commit below.
+          pip install -e .
+      - name: Lint
+        run: |
+            pre-commit install
+            pre-commit run --all-files --show-diff-on-failure
 
       # - name: Log github environment
       #   # https://github.com/hmarr/debug-action

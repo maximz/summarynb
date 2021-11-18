@@ -135,7 +135,7 @@ show(
 
 ## Automatically update on commit
 
-Let's say you have a summary notebook named `summary.ipynb`. You can install a git pre-commit hook to run the notebook automatically and incorporate it within your commit:
+Let's say you have a summary notebook named `summary.ipynb`. You can install a git pre-commit hook to run the notebook automatically when you make a commit:
 
 ```bash
 # install the git hook
@@ -145,9 +145,11 @@ summarynb install
 summarynb mark summary.ipynb
 ```
 
-When you run `git commit`, summarynb will automatically re-execute `summary.ipynb` and add the changes to your commit.
+When you run `git commit`, summarynb will automatically re-execute `summary.ipynb` and add the changes to your commit. The notebooks marked for automatic execution are stored in `.summarynb.config`, which you can add to your Git repo to execute these notebooks in CI.
 
-Customize this further:
+This automatic execution does not automatically add the modified summary notebook to your commit. Instead, it will pause your commit and allow you to review the updated notebook. Think of it as an automatic reminder to keep your summary notebooks up to date with the results you have on disk. Also, the hook strips metadata from the notebook, so that changes in execution timestamps don't count as "your summary notebook is out of date from what's in the git index".
+
+Customize this hook further:
 
 ```bash
 # view help
@@ -164,6 +166,21 @@ summarynb unmark summary.ipynb
 
 # uninstall the git hook
 summarynb uninstall
+```
+
+You can alternatively install the hook within `.pre-commit-config.yaml` if you use [pre-commit](https://pre-commit.com):
+
+```yaml
+repos:
+- repo: local
+  hooks:
+    - id: summarynb
+      name: run summarynb
+      entry: summarynb run
+      language: system
+      verbose: true
+      always_run: true
+      pass_filenames: false
 ```
 
 ## Other tips to make your notebooks beautiful
@@ -215,6 +232,7 @@ pip install jupyterlab_code_formatter==x.x.x
 ```bash
 pip install -r requirements_dev.txt
 pip install -e .
+make lint
 make test
 
 # bump version before submitting a PR against master (all master commits are deployed)
@@ -225,6 +243,4 @@ bump2version patch # possible: major / minor / patch
 
 TODOs:
 
-* Lint
-* Pre-commit support
 * Accept pdf and other image formats

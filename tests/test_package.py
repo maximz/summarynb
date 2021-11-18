@@ -4,6 +4,7 @@ import summarynb
 import requests
 import os
 
+
 def test_version_number_not_yet_on_pypi():
     """For release branches, check that the version number is not yet on PyPI, so we remember to bump the version number.
     Run only on pull request builds against master branch. (Not run on push builds of master branch itself)
