@@ -1,0 +1,27 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    -   id: trailing-whitespace
+        exclude: .ipynb
+    -   id: end-of-file-fixer
+        exclude: .ipynb
+    -   id: check-yaml
+    -   id: check-added-large-files
+        args: ['--maxkb=1000']
+    -   id: requirements-txt-fixer
+    -   id: check-merge-conflict
+-   repo: https://github.com/psf/black
+    rev: 21.8b0
+    hooks:
+      - id: black-jupyter
+        language_version: python # Should be a command that runs python3.6+, like python3
+- repo: local
+  hooks:
+    - id: summarynb
+      name: run summarynb
+      entry: summarynb run
+      language: system
+      verbose: true
+      always_run: true
+      pass_filenames: false
