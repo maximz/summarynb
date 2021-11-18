@@ -25,7 +25,7 @@ def image(img_src):
     # Convert absolute path to relative path, since a browser won't be able to grab an image from "/home/..."
     img_src = os.path.relpath(img_src)
 
-    def template(max_width, max_height):
+    def template(max_width, max_height, *args, **kwargs):
         def convert_to_px_or_unset(optional_numeric_value):
             if not optional_numeric_value:
                 return "inherit"
@@ -50,8 +50,36 @@ def table(df):
     :rtype: function
     """
 
-    def template(max_width, max_height):
+    def template(*args, **kwargs):
         return df.to_html()
+
+    return template
+
+
+def plaintext(text, **kwargs):
+    """Renders plain text.
+
+    :param text: text to display
+    :type text: str
+    """
+
+    def template(*args, **kwargs):
+        # convert to html
+        return f"<pre>{text}</pre>"
+
+    return template
+
+
+def empty(width=None):
+    """Creates empty separator block.
+
+    :param width: specify block width, defaults to None
+    :type width: int, optional
+    """
+
+    def template(max_width, *args, **kwargs):
+        # empty cell
+        return f'<div style="min-width: {max_width if not width else width}px;"></div>'
 
     return template
 
@@ -77,6 +105,15 @@ def indexed_csv(fname, cols=None, **kwargs):
     return csv(fname, cols=cols, index_col=0, **kwargs)
 
 
+def textfile(fname, **kwargs):
+    """
+    Read a text file and render as plain text.
+    """
+    with open(fname, "r") as f:
+        text = f.read()
+        return plaintext(text)
+
+
 """Main logic."""
 
 
@@ -93,8 +130,10 @@ def _get_template(user_input):
     # detect different table types
     if extension == ".csv":
         return csv(user_input)
-    if extension in [".tsv", ".txt"]:
+    elif extension == ".tsv":
         return csv(user_input, sep="\t")
+    elif extension == ".txt":
+        return textfile(user_input)
 
     # assume it's an image
     return image(user_input)
