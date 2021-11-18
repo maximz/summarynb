@@ -19,42 +19,40 @@ A summary notebook is just a plain Jupyter notebook:
 * Shows important figures and tables inline with your text, imported by their filenames
 * Committed and versioned with your code — meaning the summary notebook always reflects your analysis at that point in time, because it imports your latest result files.
 
-**Write out the analysis as you go along, and incorporate relevant figures and tables inline**.
-
-Use `summarynb` to render any plot or table alongside your text, by its filename:
+**I write out the analysis as I go along, and incorporate relevant figures and tables inline**. Use `summarynb` to render any plot or table alongside your text, by its filename:
 ```python
 from summarynb import show
 show("plot.png")
 ```
-    
-  * _summarynb_ knows what to do for common file extensions
-  
-  * _summarynb_ uses sane defaults for figure sizes. You won't get ginormous figures like you'd see if showing an image with plain Markdown.
-  
 
-**Look at related figures side-by-side**:
+  * _summarynb_ knows what to do for common file extensions
+
+  * _summarynb_ uses sane defaults for figure sizes. You won't get ginormous figures like you'd see if showing an image with plain Markdown.
+
+
+Sprucing up my summary notebooks with _summarynb_ means I can **look at related figures side-by-side**:
 
 ```python
 from summarynb import show
 show([ "plot1.png", "plot2.png", "results.csv" ])
 ```
 
-  - Review two visualizations of the same experiment, produced by different scripts and notebooks, in the same row of my summary notebook.
+  - For example, I'll review two visualizations of the same experiment, produced by different scripts and notebooks, in the same row of my summary notebook.
 
-  - Pull in a results table alongside a figure. Imagine a linear regression: With a one-liner call to `show()`, review the scatterplot and a table of regression coefficients side-by-side.
+  - Or I'll pull in a results table alongside a figure. Let's say I run a simple linear regression. With a one-liner call to `show()`, I can review the scatterplot and a table of regression coefficients side-by-side.
 
-  - If you've generated figures for every data point, review them all easily in an **auto-layout grid**. Just pass an array of entries to `chunks()` and then to `show()`, docs below.
+  - Or if I have generated figures for every data point, I can review them all easily in an **auto-layout grid**. Just passing an array of entries to `chunks()` and then to `show()`, docs below.
 
 
-**Screen share your summary notebook or send a Github link** to collaborators. Be concise. Only include the best figures and tables, not the intermediate plots.
+Now I can cleanly **screen share results or send a Github link** to my collaborators. (Be concise. Only include the best figures and tables, not all the intermediate plots you generated.)
 
-**The presented results are up-to-date with the code** version checked out.
+And I love that I can trust that the **presented results are up-to-date with the code** version I have checked out.
 
-**Auto-regenerate your summary notebook on every Git commit** by installing the optional git commit hook. 
+I **auto-regenerate my summary notebooks on every Git commit** by installing the optional git commit hook.
 
-**Easily go back to the exact source.** What generated that plot or table? The filename is right in the notebook. Grep for that filename to track down which script or notebook wrote it. Or link in your summary notebook to the source scripts/notebooks that generated your results.
+Plus I can **easily go back to the exact source.** I no longer have to wonder what generated a specific plot or table of interest, because I've got the filename right in front of me in the notebook. Just grep for that filename in your repo to track down which script or notebook wrote that file. (Or link to the source scripts/notebooks that generated your results!)
 
-Since 2015, every project of mine has included a summary notebook, thanks to a tip from my former colleague Nick. This documentation practice **saves so much time when returning to old projects**. 
+Since 2015, every project of mine has included a summary notebook, thanks to a tip from my former colleague Nick. This documentation practice **saves so much time when returning to old projects**.
 
 ## [Example summarynb usage.](https://nbviewer.jupyter.org/github/maximz/summarynb/blob/master/Example.ipynb)
 
