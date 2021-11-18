@@ -84,13 +84,13 @@ def get_or_create_metadata():
     # retrieves or creates metadata file
     fname = path_to_config_file()
     if os.path.exists(fname):
-        return pd.read_csv(fname)
+        return pd.read_csv(fname).drop_duplicates()
     return pd.DataFrame(data=None, index=[], columns=["filename"], dtype="object")
 
 
 def write_metadata(df):
     # writes metadata file
-    df.to_csv(path_to_config_file(), index=None)
+    df.drop_duplicates().to_csv(path_to_config_file(), index=None)
 
 
 @main.command(name="list")
