@@ -1,7 +1,7 @@
 # Jupyter Summary Notebooks
 
 [![](https://img.shields.io/pypi/v/summarynb.svg)](https://pypi.python.org/pypi/summarynb)
-[![](https://img.shields.io/travis/maximz/summarynb.svg)](https://travis-ci.com/maximz/summarynb)
+[![CI](https://github.com/maximz/summarynb/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/maximz/summarynb/actions/workflows/ci.yaml)
 [![](https://img.shields.io/badge/docs-here-blue.svg)](https://summarynb.maximz.com)
 [![](https://img.shields.io/github/stars/maximz/summarynb?style=social)](https://github.com/maximz/summarynb)
 
