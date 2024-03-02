@@ -1,19 +1,19 @@
 import os
 import pandas as pd
-from IPython.display import HTML, display
+from IPython.display import HTML, display, Image
 
 """Top-level package for Summary Notebooks."""
 
 __author__ = """Maxim Zaslavsky"""
 __email__ = "maxim@maximz.com"
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 """Functions that return functions that return HTML."""
 
 # TODO: make max_width a property of <td>, not <img>?
 
 
-def image(img_src):
+def image(img_src, embed=False):
     """Renders an image.
 
     :param img_src: Image filename.
@@ -22,8 +22,13 @@ def image(img_src):
     :rtype: function
     """
 
-    # Convert absolute path to relative path, since a browser won't be able to grab an image from "/home/..."
-    img_src = os.path.relpath(img_src)
+    if embed:
+        image_data = Image(data=img_src, embed=True)
+        mimetype, base64_data = list(image_data._repr_mimebundle_()[0].items())[0]
+        img_src = f"data:{mimetype};charset=utf-8;base64,{base64_data}"
+    else:
+        # Convert absolute path to relative path, since a browser won't be able to grab an image from "/home/..."
+        img_src = os.path.relpath(img_src)
 
     def template(max_width, max_height, *args, **kwargs):
         def convert_to_px_or_unset(optional_numeric_value):
